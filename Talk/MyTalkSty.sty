@@ -1,0 +1,1092 @@
+% ======================================================================
+% MyTalkSty.sty  (custom beamer style helpers)
+% ======================================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{MyTalkSty}[2026/01/17 Custom Beamer Talk Style]
+
+
+% Packages (use \RequirePackage inside .sty)
+
+\RequirePackage[export]{adjustbox}
+\RequirePackage[scale=2]{ccicons}
+\RequirePackage[all]{xy}
+\RequirePackage[scientific-notation=true]{siunitx}
+\RequirePackage[skins,listings]{tcolorbox}
+\RequirePackage{subfiles}
+
+\RequirePackage[outline]{contour}
+\RequirePackage{rotating}
+\RequirePackage{multirow}
+\RequirePackage{graphicx}
+\RequirePackage{colortbl}
+\RequirePackage{booktabs}
+\RequirePackage{nicematrix}
+\RequirePackage{xmpmulti}
+\RequirePackage{appendixnumberbeamer}
+\RequirePackage{epsfig}
+\RequirePackage{wrapfig}
+\RequirePackage{subfigure}
+\RequirePackage{float}
+\RequirePackage{pgfplots}
+\RequirePackage{smartdiagram}
+\RequirePackage{verbatim}
+\RequirePackage{ragged2e}
+\RequirePackage{tikz-cd}
+\RequirePackage{pgfgantt}
+\RequirePackage{transparent}
+\RequirePackage{listings}
+\RequirePackage{url}
+\RequirePackage{multicol}
+\RequirePackage{comment}
+\RequirePackage{iftex}
+\RequirePackage{eso-pic}
+\RequirePackage{epic}
+\RequirePackage{mathtools}
+\RequirePackage{nccmath}
+\RequirePackage{array}
+\RequirePackage{algorithmic}
+\RequirePackage{algorithm}
+\RequirePackage{scrhack}
+\RequirePackage{amsthm}
+\RequirePackage{tikz}
+\RequirePackage{nth}
+\RequirePackage{indentfirst}
+\RequirePackage{totcount}
+\RequirePackage{refcount}
+\RequirePackage{xparse}
+\RequirePackage{turnstile}
+\RequirePackage{xfrac}
+\RequirePackage{pifont}
+\RequirePackage{fontawesome5}
+\RequirePackage{enumitem}
+\RequirePackage{animate}
+\RequirePackage{dashrule}
+\RequirePackage{xspace}   % needed by \smodels, etc.
+\RequirePackage[absolute,overlay]{textpos}
+\RequirePackage{amsmath,amssymb}
+\RequirePackage{overpic}
+\RequirePackage{multimedia}
+\RequirePackage{pgf}
+\RequirePackage{cancel}
+\RequirePackage{wasysym}
+\RequirePackage{soul}
+\RequirePackage{etoolbox}
+\RequirePackage{fancyvrb}
+\RequirePackage{fvextra}
+% \RequirePackage{lmodern} % OJO: si usas Metropolis con Fira, esto puede cambiar la tipografía.
+
+\pgfplotsset{compat=1.18}
+
+
+% Colors
+
+% Base palette
+\definecolor{cobalt}{RGB}{0,71,171}
+\definecolor{dukeblue}{rgb}{0.0, 0.0, 0.61}
+\definecolor{blush}{rgb}{0.87, 0.36, 0.51}
+\definecolor{oxfordblue}{rgb}{0.0, 0.13, 0.28}
+
+\definecolor{DarkGrey}{RGB}{118,119,123}
+\definecolor{MediumGrey}{RGB}{220,220,220}
+\definecolor{LightGrey}{RGB}{240,240,240}
+\definecolor{slidenumber}{RGB}{59,56,56}
+
+\definecolor{bricred}{rgb}{0.8, 0.1, 0.1}
+\definecolor{red4}{rgb}{0.54, 0.0, 0.0}
+\definecolor{dodgerblue3}{rgb}{0.0, 0.49, 0.83}
+\definecolor{dodgerblue4}{rgb}{0.06, 0.31, 0.55}
+\definecolor{tealblue}{rgb}{0.08, 0.40, 0.90}
+\definecolor{darkspringgreen}{rgb}{0.09, 0.45, 0.27}
+\definecolor{blue(pigment)}{rgb}{0.2, 0.2, 0.6}
+\definecolor{mediumelectricblue}{rgb}{0.01, 0.31, 0.59}
+
+\definecolor{pacificgray}{cmyk}{0,.15,.35,.60}
+\definecolor{pacificlgray}{cmyk}{0,0,.2,.4}
+\definecolor{pacificcream}{cmyk}{.05,.05,.15,0}
+\definecolor{deepyellow}{cmyk}{0,.17,.80,0}
+\definecolor{lightblue}{cmyk}{.49,.01,0,0}
+\definecolor{lightbrown}{cmyk}{.09,.15,.34,0}
+
+\definecolor{smcolor}{rgb}{0.8,0.5,0.5}
+\definecolor{bsmcolor}{rgb}{0.4,0.6,0.8}
+\definecolor{pvcolor}{rgb}{0.8,0.8,0.8}
+\definecolor{formalshade}{rgb}{0.95,0.95,1}
+\definecolor{magentatitle}{RGB}{255,0,255}
+
+% Define missing names used in your labels (avoid compilation errors)
+\definecolor{darktangerine}{RGB}{255,140,0}
+\definecolor{darkpowderblue}{RGB}{0,51,153}
+\definecolor{darkelectricblue}{RGB}{83,104,120}
+
+\newcommand{\ccell}{\cellcolor{dukeblue!50!}}
+
+\definecolorseries{colours}{hsb}{grad}[hsb]{.575,1,1}{.987,-.234,0}
+\resetcolorseries[12]{colours}
+
+% Components palette (web-like slides)
+\definecolor{PanelBorder}{RGB}{210,210,210}
+\definecolor{PanelBG}{RGB}{255,255,255}
+
+
+% TikZ settings & libraries
+
+\usesmartdiagramlibrary{additions}
+\usepgfplotslibrary{dateplot}
+
+\usetikzlibrary{
+  arrows.meta, decorations, calc, shadows.blur,
+  decorations.pathreplacing, decorations.pathmorphing, decorations.markings,
+  shapes, arrows, positioning, fit, bending, chains, matrix, patterns, trees,
+  hobby, patterns.meta, calligraphy, mindmap
+}
+\tikzstyle{mathbox} = [inner sep=0pt, anchor=base]
+\tikzstyle{every picture}+=[remember picture]
+
+% Feynman styles
+\tikzset{
+  >=triangle 45,
+  pos=.8,
+  scalar/.style={decorate, dashed, draw=cobalt},
+  photon/.style={decorate, thick,decoration={snake,segment length=8,post length=1mm,pre length = 1.5mm}},
+  boson/.style={decorate, thick,draw=cobalt,decoration={snake,segment length=5,post length=1mm,pre length = 1mm}},
+  particle/.style={draw=black, postaction={decorate}},
+  fermion/.style={draw=black, postaction={decorate}, decoration={markings,mark=at position .5 with {\arrow[draw=black,scale=1.5,>=stealth]{>}}}},
+  antifermion/.style={draw=black, postaction={decorate},decoration={markings,mark=at position .5 with {\arrow[draw=black,scale=1.5,>=stealth]{<}}}},
+  gluon/.style={decorate, draw=black,decoration={coil,amplitude=4pt, segment length=5pt}},
+  gluon_sm/.style={decorate, draw=blush,decoration={coil,amplitude=4pt, segment length=5pt}},
+  BSM/.style={draw=cobalt, postaction={decorate}, thick,decoration={segment length=8}},
+  SM/.style={draw=blush, postaction={decorate}, thick,decoration={segment length=5}},
+}
+
+
+% Hyperref setup (beamer already loads hyperref; this only configures)
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  filecolor=blue,
+  urlcolor=dukeblue,
+  citecolor=purple,
+  pdftitle={Update Results},
+  pdfsubject={Latex},
+  pdfauthor={Yoxara S Villamizar},
+  pdfpagemode=FullScreen,
+  pdfkeywords={BSM Phenomenology}
+}
+
+
+% Common labels / status tags
+
+\newcommand{\tobedone}[1]{\fcolorbox{violet}{violet!10}{\it{\color{violet}{To be done}}}}
+\newcommand{\done}[1]{\fcolorbox{darktangerine}{darktangerine!10}{\it{\color{orange!80!black}{Done}}}}
+\newcommand{\unnecessary}[1]{\fcolorbox{linkred}{linkred!10}{\it{\color{red}{Not necessary}}}}
+\newcommand{\undervalidation}[1]{\fcolorbox{darkpowderblue}{darkpowderblue!10}{\it{\color{darkpowderblue}{Under validation}}}}
+\newcommand{\tobediscussed}[1]{\fcolorbox{darkelectricblue}{darkelectricblue!10}{\it{\color{darkelectricblue}{To be discussed}}}}
+\newcommand{\tobechecked}[1]{\fcolorbox{magenta}{magenta!10}{\it{\color{magenta}{To be checked}}}}
+\newcommand{\disabledinSMS}[1]{\fcolorbox{green}{green!10}{\it{\color{green!80!black}{Disabled in SModelS}}}}
+\newcommand{\listedabove}[1]{\fcolorbox{pink}{pink!10}{\it{\color{pink!80!black}{Listed above}}}}
+\newcommand{\listedbelow}[1]{\fcolorbox{gray}{gray!10}{\it{\color{gray!80!black}{Listed below}}}}
+\newcommand{\reviewedbelow}[1]{\fcolorbox{olive}{olive!10}{\it{\color{olive!80!black}{reviewed below}}}}
+
+\newcommand{\cmark}{\textcolor{green}{\ding{51}}}
+\newcommand{\xmark}{\textcolor{red}{\ding{55}}}
+
+
+% Math defaults / arXiv line
+
+\everymath{\displaystyle}
+
+\newcommand{\arxiv}[1]{%
+  \par\smallskip%
+  {\centering\textbf{\textcolor{dukeblue}{\small Based on: }}#1\par}%
+  \smallskip%
+}
+
+
+% Physics shorthand (as you had)
+
+\newcommand{\zp}{\ensuremath{\mathrm{Z}^{\prime}}}
+\newcommand{\wpp}{\ensuremath{\mathrm{W}^{\prime}}}
+\newcommand{\w}{\ensuremath{\mathrm{W}}}
+\newcommand{\z}{\ensuremath{\mathrm{Z}}}
+\newcommand{\sm}{\ensuremath{\mathbf{SU(3)_C \times SU(2)_L \times U(1)_Y}}}
+\newcommand{\ux}{\ensuremath{\mathrm{U(1)_X}}}
+\newcommand{\ubl}{\ensuremath{\mathrm{U(1)_{B-L}}}}
+\newcommand{\up}{\ensuremath{\mathrm{U(1)^{\prime}}}}
+
+\newcommand{\gc}{\gamma_5}
+\newcommand{\g}{\gamma}
+\newcommand{\p}{\prime}
+\newcommand{\lag}{{\cal L}}
+\renewcommand{\bar}{\overline}
+\newcommand{\E}{\mathrm{e}}
+\newcommand{\Lg}{\mathcal{L}}
+
+\newcommand{\hn}{h}
+\newcommand{\Hn}{{H^0}}
+\newcommand{\An}{A^0}
+\newcommand{\Hp}{{H^\pm}}
+
+\newcommand{\smo}{\textsc{SModelS}\xspace}
+\newcommand{\smodels}{\textsc{SModelS}\xspace}
+\newcommand{\smothree}{\textsc{SModelS}~v3\xspace}
+\newcommand{\smotwo}{\textsc{SModelS}~v2\xspace}
+\newcommand{\smoone}{\textsc{SModelS}~v1\xspace}
+
+\newcommand{\cf}{\textit{cf.}}
+\newcommand{\calchep}{\textsc{CalcHep}}
+\newcommand{\micromegas}{\textsc{micrOMEGAs}}
+\newcommand{\micromegasversion}{\textsc{micrOMEGAs}~v5.2.7.a}
+\newcommand{\micromegasNewVersion}{\textsc{micrOMEGAs}~v6.0}
+\newcommand{\feyncalc}{\textsc{FeynCalc}}
+
+\newcommand{\Ztwo}{\ensuremath{{\mathcal Z}_2}}
+\newcommand{\etmiss}{\ensuremath{{E_T^{\rm{miss}}}}}
+\newcommand{\etm}{\mathrm{E}_\mathrm{T}^{\mathrm{miss}}}
+\newcommand{\met}{\ensuremath{E_{\mathrm{T}}^{\mathrm{miss}}}}
+\newcommand{\Em}{\mathrm{E}_\mathrm{T}^{\mathrm{miss}}}
+
+\newcommand{\gev}{\mathrm{\, GeV}}
+\newcommand{\tev}{\mathrm{\, TeV}}
+
+\newcommand{\code}[1]{\texttt{#1}}
+
+
+% Beamer fonts/colors (your setup)
+
+\setbeamerfont{footline}{size=\scriptsize,family=\rmfamily,series=\bfseries}
+\setbeamerfont{headline}{size=\tiny,family=\ttfamily,shape=\upshape}
+\setbeamerfont{title}{size=\huge,family=\rmfamily,series=\bfseries}
+\setbeamerfont{subtitle}{size=\footnotesize,series=\bfseries}
+\setbeamerfont{author}{family=\rmfamily,series=\bfseries,size=\normalsize}
+\setbeamerfont{date}{size=\scriptsize}
+\setbeamerfont{block title}{family=\rmfamily,series=\bfseries,size=\normalsize}
+\setbeamerfont{structure}{size=\normalsize,series=\bfseries}
+\setbeamerfont{footnote}{size=\tiny}
+
+\setbeamerfont{section in head/foot}{size=\scriptsize,series=\bfseries}
+\setbeamerfont{subsection in head/foot}{size=\scriptsize,series=\bfseries}
+\setbeamerfont{author in head/foot}{size=\scriptsize,series=\bfseries}
+\setbeamerfont{institute in head/foot}{size=\tiny,family=\rmfamily,series=\bfseries}
+\setbeamerfont{date in head/foot}{size=\scriptsize,series=\bfseries}
+\setbeamerfont{title in head/foot}{size=\tiny}
+\setbeamerfont{normal text}{family=\rmfamily,series=\bfseries}
+
+\setbeamercolor{alerted text}{fg=dukeblue,bg=gray!20!white}
+\setbeamercolor*{palette primary}{fg=white,bg=white}
+\setbeamercolor*{palette secondary}{fg=black,bg=blue!10!white}
+\setbeamercolor*{palette tertiary}{fg=black,bg=white}
+\setbeamercolor*{palette quaternary}{fg=gray!20!white,bg=gray!20!white}
+
+\setbeamercolor{author in foot}{fg=black,bg=gray!20!white}
+\setbeamercolor{title in foot}{fg=black,bg=gray!20!white}
+\setbeamercolor{date in foot}{fg=black,bg=gray!20!white}
+\setbeamercolor{progress bar}{fg=dukeblue!70!white,bg=gray!20!white}
+\setbeamercolor{frametitle}{bg=white,fg=dukeblue}
+\setbeamercolor{normal text}{fg=black,bg=white}
+\setbeamercolor{section in toc}{fg=cobalt}
+\setbeamercolor{item}{fg=cobalt}
+
+
+% Section counter helper
+
+\newtotcounter{mysec}
+\AtBeginSection{\addtocounter{mysec}{1}\label{mysec:\themysec}}
+\newcounter{foo}
+
+\newcommand{\beginappendix}{%
+  \newcounter{finalframenumber}%
+  \setcounter{finalframenumber}{\value{framenumber}}%
+}
+\newcommand{\finishappendix}{%
+  \setcounter{framenumber}{\value{finalframenumber}}%
+}
+
+
+% Headline & frametitle templates (your customization of Metropolis)
+
+\makeatletter
+
+\setbeamertemplate{headline}{%
+  \leavevmode
+  \begin{beamercolorbox}[wd=\paperwidth,ht=3.0ex,dp=1.1ex]{palette quaternary}
+    \centering
+    \hspace{-0.38cm}%
+    \small{\insertsectionnavigationhorizontal{1.0\paperwidth}{\centering \hspace{-0.0cm}}{\hskip0pt plus1filll}}%
+  \end{beamercolorbox}
+}
+
+\pgfdeclarehorizontalshading[frametitle.bg,frametitle right.bg]{beamer@frametitleshade}{\paperheight}{%
+  color(1pt)=(frametitle.bg);
+  color(\paperwidth)=(frametitle right.bg)
+}
+
+\setlength{\metropolis@frametitle@padding}{0.4ex}
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2.5ex,sep=1pt,%
+    leftskip=\metropolis@frametitle@padding,%
+    rightskip=\metropolis@frametitle@padding]{frametitle}%
+    \metropolis@frametitlestrut@start%
+    \RaggedRight%
+    \hspace*{0.5ex}%
+    \small\insertframetitle%
+    \nolinebreak%
+    \metropolis@frametitlestrut@end%
+    \hfill%
+  \end{beamercolorbox}%
+  \usebeamertemplate*{progress bar in head/foot}%
+}
+
+\setlength{\metropolis@progressinheadfoot@linewidth}{3pt}
+
+\setbeamerfont*{footline}{size=\fontsize{6}{6}}
+\defbeamertemplate{footline}{footline theme}{%
+  \nointerlineskip%
+  \leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[wd=.22\paperwidth,ht=2.0ex,dp=1.4ex,center]{author in foot}%
+      \usebeamerfont{author in head/foot}%
+      \tiny{\insertshortauthor}%
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.45\paperwidth,ht=2.0ex,dp=1.4ex,center]{title in foot}%
+      \usebeamerfont{title in head/foot}\hspace{-1cm}%
+      \textcolor{dukeblue}{~\rule[-0.5em]{.3em}{1.3em}}%
+      \tiny{\insertshorttitle}%
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.33\paperwidth,ht=2.0ex,dp=1.4ex,right]{date in foot}%
+      \usebeamerfont{date in head/foot}%
+      \hspace*{2.5ex}%
+      \scriptsize\color{dukeblue}\hspace{0.01cm}| \hspace{0.01cm}\textbullet\hspace{0.01cm}%
+      \color{black}\tiny{\insertshortinstitute}%
+      \scriptsize\color{dukeblue}\hspace{0.01cm}\textbullet\hspace{0.01cm}|%
+      \hspace*{3ex}%
+      \color{black}\tiny%
+      \insertframenumber\ {\textcolor{dukeblue}{\faBookOpen}}\ \inserttotalframenumber%
+      \hspace*{4ex}%
+    \end{beamercolorbox}%
+  }%
+}
+\setbeamertemplate{footline}[footline theme]
+\makeatother
+
+
+% Blocks / bibliography item
+
+\setbeamertemplate{bibliography item}[text]
+\setbeamertemplate{blocks}[rounded][shadow=true]
+
+
+% Itemize styles (your definitions)
+
+\newcommand{\itemsymbol}{\color{cobalt}\ding{254}\normalcolor}
+
+\newlist{myitemize}{itemize}{1}
+\setlist[myitemize,1]{label=\itemsymbol, nosep, leftmargin=*}
+
+\newlist{mitemize}{itemize}{1}
+\setlist[mitemize,1]{label=\color{cobalt}\ding{118}, nosep, leftmargin=*, before=\normalcolor}
+
+\newenvironment{menumerate}{%
+  \begin{enumerate}[label=\textcolor{cobalt}\large{\textbf{\ding{\numexpr171+\value{enumi}}}\normalsize}]%
+}{\end{enumerate}}
+
+\newlist{firstitemize}{itemize}{1}
+\setlist[firstitemize,1]{label=\color{cobalt!70!black}\ding{111}, nosep, leftmargin=*, before=\normalcolor}
+
+\newlist{seconditemize}{itemize}{1}
+\setlist[seconditemize,1]{label=\color{cobalt!70!black}\ding{226}\normalcolor, nosep, leftmargin=*}
+
+\newlist{thirditemize}{itemize}{1}
+\setlist[thirditemize,1]{label=\color{cobalt!70!black}\ding{118}, nosep, leftmargin=*, before=\normalcolor}
+
+\newlist{checkitemize}{itemize}{1}
+\setlist[checkitemize,1]{label=\color{green!70!black}\faCheck, nosep, leftmargin=*, before=\normalcolor}
+
+\newlist{progitemize}{itemize}{1}
+\setlist[progitemize,1]{label=\faRocket, nosep, leftmargin=*, before=\normalcolor}
+
+\newlist{progitemize2}{itemize}{1}
+\setlist[progitemize2,1]{label=\color{white!70!black}\faCogs, nosep, leftmargin=*, before=\normalcolor}
+
+% Rocket icon (as you had)
+\newcommand{\rocketIcon}{%
+  \raisebox{-0.2em}{%
+    \begin{tikzpicture}[scale=0.09,rotate=-40]
+      \draw[fill=gray] (-0.5,0) rectangle (0.5,3);
+      \draw[fill=red] (-0.5,3) -- (0,4) -- (0.5,3) -- cycle;
+      \draw[fill=blue] (-0.25,2.2) circle (0.25);
+      \draw[fill=orange] (-0.7,0) -- (-1.2,-0.7) -- (-0.7,-1) -- (-0.3,-0.3) -- cycle;
+      \draw[fill=orange] (0.7,0) -- (1.2,-0.7) -- (0.7,-1) -- (0.3,-0.3) -- cycle;
+      \draw[fill=yellow] (-0.3,-1) -- (0,-2) -- (0.3,-1) -- cycle;
+      \draw[fill=red] (-0.2,-1) -- (0,-1.7) -- (0.2,-1) -- cycle;
+    \end{tikzpicture}%
+  }%
+}
+
+\newlist{progritemize}{itemize}{1}
+\setlist[progritemize,1]{label=\rocketIcon, nosep, leftmargin=*, before=\normalcolor}
+
+
+% TOC (section in toc template)
+
+\pgfdeclarehorizontalshading{section shading}{2cm}{
+  color(0cm)=(gray!15);
+  color(2cm)=(gray!7);
+  color(3cm)=(gray!15)
+}
+
+\tikzset{
+  section number/.style={
+    draw=none,
+    rectangle,
+    left color=cobalt!50,
+    right color=cobalt!30!gray!10,
+    minimum size=1.2em,
+    text=white,
+  },
+  section/.style={
+    draw=none,
+    rectangle,
+    shading=section shading,
+    minimum height=1.2em,
+    minimum width=0.9\textwidth,
+    text width=0.9\textwidth,
+    text=black,
+    align=left
+  }
+}
+
+\makeatletter
+\setbeamertemplate{section in toc}{%
+  \ifnum\the\beamer@tempcount<1
+    \tikz[baseline=-0.5ex]\node[section number]{\,0\inserttocsectionnumber};%
+  \else
+    \tikz[baseline=-0.5ex]\node[section number]{\,\inserttocsectionnumber};%
+  \fi
+  \,%
+  \tikz[baseline=-0.5ex]\node[section]{\inserttocsection};%
+}
+\makeatother
+
+
+% tcolorbox environments (remark, myNote, defn)
+
+\newcommand{\remarkIconInfo}{\faInfoCircle}
+\newcommand{\remarkIconWarn}{\faExclamationTriangle}
+\newcommand{\remarkIconIdea}{\faLightbulb}
+
+\newcommand{\RemarkIcon}{%
+  \tikz[baseline=-0.6ex]\node[draw,circle,inner sep=0.8pt,fill=dukeblue!15]{\scriptsize\bfseries i};%
+}
+
+\newtcolorbox{remark}[1][]{
+  title={\scalebox{1.1}{\remarkIconIdea}\,},
+  colframe=dukeblue!8!white!95!blue,
+  colback=dukeblue!8!white!95!blue,
+  coltitle=dukeblue!10!purple,
+  fontupper=\sffamily,
+  boxed title style={
+    colback=dukeblue!8!white!95!blue,
+    boxsep=1ex,
+    sharp corners
+  },
+  overlay unbroken and first={
+    \node[below right,font=\normalsize,color=red,text width=.8\linewidth]
+      at (title.north east) {#1};
+  }
+}
+
+\newtcolorbox{myNote}[1][]{
+  title={\scalebox{1.9}{\begin{turn}{0}\ding{45}\end{turn}}},
+  colframe=blue!8!white!95!blue,
+  colback=blue!8!white!95!blue,
+  coltitle=blue!10!purple,
+  fonttitle=\bfseries\sffamily,
+  fontupper=\sffamily,
+  boxed title style={colback=blue!8!white!95!blue},
+  overlay unbroken and first={
+    \node[below right,font=\normalsize,color=red,text width=.8\linewidth]
+      at (title.north east) {#1};
+  },
+}
+
+\newtcolorbox{defn}[1][]{
+  title={\textcolor{magentatitle}{\scalebox{1.2}{\ding{227}}~Definition}},
+  colframe=dukeblue!8!white!95!blue,
+  colback=dukeblue!8!white!95!blue,
+  coltitle=dukeblue!10!purple,
+  fonttitle=\bfseries\sffamily,
+  fontupper=\sffamily,
+  boxed title style={colback=dukeblue!8!white!95!blue},
+  overlay unbroken and first={
+    \node[below right,font=\normalsize,color=blue,text width=.99\linewidth]
+      at (title.north east) {#1};
+  },
+  enhanced,
+  sharp corners,
+  boxrule=0.4mm,
+  width=\textwidth,
+  attach boxed title to top left={yshift=-2mm, xshift=2mm},
+  boxed title style={
+    sharp corners,
+    boxrule=0.4mm,
+    colframe=dukeblue!8!white!95!blue,
+    colback=dukeblue!8!white!95!blue,
+  },
+}
+
+% Plain inner block (simple frame box)
+\newtcolorbox{innerblockplain}[1][white]{%
+  colback=#1, colframe=black, arc=0mm, boxrule=0.4pt,
+  width=\textwidth, box align=center
+}
+
+
+% Watermark helpers
+
+\newcommand{\PreliminaryMark}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[rotate=35, text opacity=0.10, scale=5]
+      at ($(current page.center)+(-3cm,0)$) {\textbf{Preliminary}};
+  \end{tikzpicture}%
+}
+
+\newcommand{\Watermark}[6][Preliminary]{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[rotate=#4, text opacity=#2, scale=#3]
+      at ($(current page.center)+(#5,#6)$) {\textbf{#1}};
+  \end{tikzpicture}%
+}
+
+
+% Affiliation helpers
+
+\newcommand{\affiliationInline}[4]{%
+  \begingroup
+  \setlength{\tabcolsep}{0pt}%
+  \renewcommand{\arraystretch}{1.0}%
+  \begin{tabular}{p{0.64\textwidth}p{0.36\textwidth}}
+    #1\\#2 & #3\\#4
+  \end{tabular}%
+  \endgroup
+}
+
+% Simple full-frame colored card (backup slides, etc.)
+\newcommand{\framecardfree}[2][cobalt]{%
+  {\setbeamercolor{background canvas}{bg=#1}%
+   \begin{frame}[plain,c,noframenumbering]%
+     #2%
+   \end{frame}}%
+}
+
+
+% Fixed-position TikZ layouts (your helpers)
+
+\newcommand{\FixedTikZLayout}[6]{%
+\begin{center}
+\begin{tikzpicture}
+  \node[anchor=south west,inner sep=0] (image1) at (-4,12.1) {#1};
+
+  \node[anchor=west, text width=7.0cm, align=left, draw,
+        fill=magenta!10!white, font=\scriptsize] at (-5.5,19) {#2};
+
+  \node[anchor=west, text width=7.0cm, align=left, draw,
+        fill=green!10!white, font=\scriptsize] at (-5.5,18) {#3};
+
+  \node[anchor=west, text width=7.0cm, align=left, draw,
+        fill=orange!30!white, font=\scriptsize] at (-5.5,16.8) {#4};
+
+  \coordinate (mypoint) at (-1.6,15.7);
+  \draw[orange, thick] (mypoint) ellipse (1.4cm and 0.39cm);
+
+  \node[anchor=south west,inner sep=-2] (image2) at (2.0,14.8) {#5};
+
+  \coordinate (arrowStart) at (-0.2,15.8);
+  \draw[->, thick] (arrowStart) to[bend left=-10] (image2);
+
+  \node[font=\scriptsize, text width=8.0cm] at (5,12.8) {#6};
+\end{tikzpicture}
+\end{center}%
+}
+
+\newcommand{\CoordImgOne}{-4,12.1}
+\newcommand{\CoordBoxOne}{-5.5,19}
+\newcommand{\CoordBoxTwo}{-5.5,18}
+\newcommand{\CoordBoxThree}{-5.5,16.8}
+\newcommand{\CoordEllipse}{-1.6,15.7}
+\newcommand{\CoordImgTwo}{2.0,14.8}
+\newcommand{\CoordArrowStart}{-0.2,15.8}
+\newcommand{\CoordRightText}{5,12.8}
+
+\newcommand{\FixedTikZLayoutParam}[6]{%
+\begin{center}
+\begin{tikzpicture}
+  \node[anchor=south west,inner sep=0] (image1) at (\CoordImgOne) {#1};
+  \node[anchor=west, text width=7.0cm, align=left, draw,
+        fill=magenta!10!white, font=\scriptsize] at (\CoordBoxOne) {#2};
+  \node[anchor=west, text width=7.0cm, align=left, draw,
+        fill=green!10!white, font=\scriptsize] at (\CoordBoxTwo) {#3};
+  \node[anchor=west, text width=7.0cm, align=left, draw,
+        fill=orange!30!white, font=\scriptsize] at (\CoordBoxThree) {#4};
+
+  \coordinate (mypoint) at (\CoordEllipse);
+  \draw[orange, thick] (mypoint) ellipse (1.4cm and 0.39cm);
+
+  \node[anchor=south west,inner sep=-2] (image2) at (\CoordImgTwo) {#5};
+  \coordinate (arrowStart) at (\CoordArrowStart);
+  \draw[->, thick] (arrowStart) to[bend left=-10] (image2);
+
+  \node[font=\scriptsize, text width=8.0cm] at (\CoordRightText) {#6};
+\end{tikzpicture}
+\end{center}%
+}
+
+
+% Boxed math + callouts
+
+\newcommand{\mBox}[2][blue!10]{%
+  \tikz[baseline=(X.base)]\node[draw,rounded corners,fill=#1,inner sep=1.5pt] (X) {$\displaystyle #2$};%
+}
+\newcommand{\tBox}[2][blue!10]{%
+  \tikz[baseline=(X.base)]\node[draw,rounded corners,fill=#1,inner sep=2.0pt] (X) {\footnotesize\bfseries #2};%
+}
+
+\newcommand{\mBoxN}[3][blue!10]{%
+  \tikz[baseline=(#2.base),remember picture]%
+    \node[draw,rounded corners,fill=#1,inner sep=1.5pt] (#2) {$\displaystyle #3$};%
+}
+
+\newcommand{\CalloutTo}[6]{%
+  \node[draw,rounded corners,fill=#4,inner sep=2.5pt] (#1) at #2 {#3};%
+  \draw[thick,->] (#1) to[#6] (#5);%
+}
+
+\newcommand{\Callout}[7]{%
+  \node[draw, rounded corners, fill=#5, inner sep=2.5pt] (#1) [#3=6pt of #2] {#4};
+  \draw[thick] (#1) -- ++(#6,#7) -- (#2);
+}
+
+
+% Columns helpers + separators (avoid global \columnseprule)
+
+\setlength{\columnseprule}{0pt}
+
+\newcommand{\ThreeCol}[6]{%
+  \begingroup
+  \setlength{\columnsep}{0.8cm}%
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{#1\textwidth}#4\end{column}
+    \begin{column}{#2\textwidth}#5\end{column}
+    \begin{column}{#3\textwidth}#6\end{column}
+  \end{columns}
+  \endgroup
+}
+
+\newcommand{\ColSep}[2][0.72\textheight]{%
+  \begin{column}{0.012\textwidth}
+    \centering
+    {\color{cobalt!65}\rule{#2}{#1}}
+  \end{column}
+}
+
+\tikzset{colsepLine/.style={dash dot, line width=0.6pt, cobalt!75!black, opacity=0.9}}
+
+\newcommand{\ColSepTikZ}[2][0.72\textheight]{%
+  \begin{column}{0.012\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \draw[dash dot, cobalt!75!black, line width=#2] (0,0) -- (0,#1);
+    \end{tikzpicture}
+  \end{column}
+}
+
+\newcommand{\ThreeColSep}[3]{%
+  \begingroup
+  \setlength{\columnsep}{0pt}%
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.32\textwidth}#1\end{column}
+    \ColSep{0.4pt}
+    \begin{column}{0.34\textwidth}#2\end{column}
+    \ColSep{0.4pt}
+    \begin{column}{0.32\textwidth}#3\end{column}
+  \end{columns}
+  \endgroup
+}
+
+
+% Listings / VerbatimInput styling
+
+\colorlet{rulecol}{cobalt!50!blue!50!black}
+\colorlet{codebg}{gray!5!cobalt!5}
+\renewcommand{\theFancyVerbLine}{\textcolor{gray}{\tiny\arabic{FancyVerbLine}}}
+
+\RecustomVerbatimCommand{\VerbatimInput}{VerbatimInput}{%
+  formatcom=\ttfamily,
+  fontsize=\scriptsize,
+  numbers=left, numbersep=3pt, stepnumber=1,
+  frame=single, framesep=1pt, framerule=0.6pt,
+  rulecolor=\color{rulecol},
+  xleftmargin=15pt,
+  breaklines=true, breakanywhere=true,
+  tabsize=4,
+}
+
+\lstset{
+  language=bash,
+  basicstyle=\ttfamily\scriptsize,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{green},
+  showstringspaces=false,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=3pt,
+  frame=tb,
+  framesep=1pt,
+  rulecolor=\color{cobalt!50!blue!50!black},
+  breaklines=true,
+  breakatwhitespace=false,
+  backgroundcolor=\color{gray!5!cobalt!5},
+  columns=fullflexible,
+  xleftmargin=15pt,
+  extendedchars=true,
+  inputencoding=utf8,
+  tabsize=4,
+  captionpos=b,
+  escapeinside={(*@}{@*)},
+  keywordstyle=[1]\color{bsmcolor},
+  keywordstyle=[2]\color{pvcolor!70!gray},
+  keywordstyle=[3]\color{smcolor},
+  morekeywords=[1]{Zprime, MET, H0},
+  morekeywords=[2]{PV},
+}
+
+
+% Comment environments (kept as in your file)
+
+\includecomment{comentar}
+\specialcomment{comentar}{\begingroup}{\medskip\endgroup}
+\excludecomment{comentar}
+
+\includecomment{comentario}
+\specialcomment{comentario}{\begingroup}{\endgroup}
+\excludecomment{comentario}
+
+\includecomment{details}
+\specialcomment{details}{\begingroup}{\endgroup}
+\excludecomment{details}
+
+
+% Clean slides: disable background canvas locally (for “web-like” frames)
+
+\newcommand{\NoBackground}{\setbeamertemplate{background canvas}{}}
+
+\newenvironment{CleanFrame}[1][]{%
+  \begingroup
+  \NoBackground
+  \begin{frame}[t,#1]%
+}{%
+  \end{frame}%
+  \endgroup
+}
+
+\newenvironment{CleanPlainFrame}[1][]{%
+  \begingroup
+  \NoBackground
+  \begin{frame}[plain,t,#1]%
+}{%
+  \end{frame}%
+  \endgroup
+}
+
+
+% Web-like reusable slide components (cards, panels, tags, metrics)
+
+\newcommand{\SlideTag}[1]{%
+  \tikz[baseline]{\node[draw=cobalt, text=cobalt, rounded corners=1.5pt,
+  inner xsep=6pt, inner ysep=3pt, line width=0.5pt, font=\scriptsize]{#1};}%
+}
+
+\newtcolorbox{SimpleCard}[1][]{%
+  enhanced,
+  colback=white,
+  colframe=cobalt,
+  boxrule=0.6pt,
+  sharp corners,
+  left=10pt,right=10pt,top=10pt,bottom=10pt,
+  #1
+}
+
+\newtcolorbox{NumberCard}[2][]{%
+  enhanced,
+  colback=white,
+  colframe=cobalt,
+  boxrule=0.6pt,
+  sharp corners,
+  left=10pt,right=10pt,top=14pt,bottom=10pt,
+  overlay={%
+    \draw[cobalt, line width=1.2pt] (frame.north west) -- (frame.north east);
+    \node[fill=cobalt, circle, text=white, font=\bfseries\scriptsize,
+      inner sep=4pt] at ($(frame.north)+(0,-1pt)$){#2};
+  },
+  #1
+}
+
+\newcommand{\StepHeader}[1]{%
+  \par\noindent
+  {\scriptsize #1}\par
+  \vspace{1mm}
+  {\color{cobalt}\rule{\linewidth}{0.8pt}}
+  \vspace{2mm}
+}
+
+\newcommand{\Metric}[2]{%
+  \begin{center}
+    {\fontsize{36}{40}\selectfont\bfseries #1}\par
+    \vspace{1mm}
+    {\scriptsize #2}
+  \end{center}
+}
+
+\newcommand{\ImagePlaceholder}[1]{%
+\begin{tikzpicture}
+  \node[draw=cobalt, fill=black!2, minimum width=\linewidth,
+        minimum height=0.55\textheight, align=center]{\small #1};
+\end{tikzpicture}
+}
+
+\newtcolorbox{MainPanel}{%
+  enhanced,
+  colback=PanelBG,
+  colframe=PanelBorder,
+  boxrule=0.6pt,
+  sharp corners,
+  left=10pt,right=10pt,top=10pt,bottom=10pt
+}
+
+\newcommand{\PanelTitle}[1]{\textbf{#1}\par\vspace{2mm}}
+
+\newtcolorbox{CalloutBox}{%
+  enhanced,
+  colback=cobalt!15,
+  colframe=cobalt!40,
+  boxrule=0.6pt,
+  sharp corners,
+  left=8pt,right=8pt,top=6pt,bottom=6pt
+}
+
+\newtcolorbox{HighlightBox}{%
+  enhanced,
+  colback=black!5,
+  colframe=black!5,
+  boxrule=0pt,
+  sharp corners,
+  left=8pt,right=8pt,top=6pt,bottom=6pt
+}
+
+% soul helpers for emphasis (optional)
+\newcommand{\Hi}[1]{\begingroup\sethlcolor{cobalt!15}\hl{#1}\endgroup}
+\newcommand{\Uline}[1]{\begingroup\setulcolor{cobalt}\ul{#1}\endgroup}
+
+
+% Optional convenience frames (kept from your file; safe as standalone)
+
+\newcommand{\framepic}[3][1]{%
+  {%
+    \usebackgroundtemplate{%
+      \tikz[overlay,remember picture]\node[opacity=#1,at=(current page.center)]{%
+        \includegraphics[height=\paperheight]{#2}%
+      };%
+    }%
+    \begin{frame}[plain,noframenumbering]
+      \huge{#3}
+    \end{frame}
+  }%
+}
+
+\newcommand{\framecard}[2][cobalt]{%
+  {\setbeamercolor{background canvas}{bg=#1}%
+    \begin{frame}[plain,c,noframenumbering]%
+      \begin{center}%
+        \vspace{1cm}%
+        {\color{white}\Huge\sffamily\textbf{#2}}%
+      \end{center}%
+    \end{frame}%
+  }%
+}
+
+%\usepackage{fontawesome5}
+
+% =========================================================
+% Slide tipo “stacked cards” (como la captura), en cobalt
+% =========================================================
+\newtcolorbox{StrategyBox}[2][]{%
+  enhanced,
+  colback=white,
+  colframe=cobalt!45!black,
+  boxrule=0.4pt,
+  sharp corners,
+  left=12mm,right=6pt,top=6pt,bottom=6pt,
+  before skip=2mm, after skip=0mm,
+  overlay={%
+    \fill[cobalt!8] (frame.north west) rectangle ([xshift=12mm]frame.south west);
+    \node[anchor=center, text=cobalt, font=\small]
+      at ([xshift=6mm]frame.west) {#2};
+  },
+  #1
+}
+
+\newcommand{\StrategyItem}[3]{%
+  \begin{StrategyBox}{#1}
+    \textbf{#2}\par
+    \vspace{0.3mm}
+    \scriptsize #3
+  \end{StrategyBox}
+}
+
+
+\newcommand{\ChapterPill}[1]{%
+  \tikz[baseline]{%
+    \node[
+      rounded corners=2pt,
+      fill=cobalt!10,
+      draw=none,
+      inner xsep=7pt,
+      inner ysep=4pt,
+      font=\scriptsize\bfseries,
+      text=black
+    ] {#1};%
+  }%
+}
+
+% chevron  2 pass
+\newcommand{\TwoStepChevron}[2]{%
+\begin{center}
+\begin{tikzpicture}[x=\textwidth,y=1cm]
+  \def\h{0.85}     % 
+  \def\a{0.04}     % 
+  \def\m{0.50}     % 
+
+  %  1 pass
+  \path[fill=gray!14,draw=none]
+    (\a,0) -- (\m-\a,0) -- (\m,0.5*\h) -- (\m-\a,\h) -- (\a,\h) -- (0,0.5*\h) -- cycle;
+
+  %  2 pass 
+  \path[fill=gray!14,draw=none]
+    (\m+\a,0) -- (1-\a,0) -- (1,0.5*\h) -- (1-\a,\h) -- (\m+\a,\h) -- (\m,0.5*\h) -- cycle;
+
+  % Numbers
+  \node[font=\Large\bfseries,text=black] at (0.25,0.5*\h) {#1};
+  \node[font=\Large\bfseries,text=black] at (0.75,0.5*\h) {#2};
+\end{tikzpicture}
+\end{center}%
+}
+
+
+
+
+% =========================================================
+% "Web-like" chapter/steps slide (01/02/03 + cobalt rule)
+% =========================================================
+\newcommand{\StepCol}[3]{%
+  {\small #1}\par\vspace{1mm}%
+  {\color{cobalt}\rule{\linewidth}{1.0pt}}\par\vspace{2.5mm}%
+  {\Large\rmfamily\bfseries #2}\par\vspace{1.5mm}%
+  {\normalsize #3}%
+}
+
+
+% Chevron badge (icon inside), cobalt style
+% #1 icon (can already include \color{cobalt})
+% #2 height, e.g. 1.55cm
+\newcommand{\ChevronBadge}[2]{%
+\begin{tikzpicture}[baseline=(B.center)]
+  % Base box
+  \node[inner sep=0pt, minimum width=1.15cm, minimum height=#2, draw=none] (B) {};
+
+  % Chevron geometry (tune if needed)
+  \pgfmathsetlengthmacro{\d}{0.2*#2} % tip depth
+  \pgfmathsetlengthmacro{\x}{0.08cm}  % horizontal inset (0.08–0.22cm)
+
+  % Chevron shape
+  \path[
+    draw=cobalt!80!black,
+    line width=0.55pt,
+    fill=white,
+    line join=round
+  ]
+    (B.north west) -- (B.north east) --
+    ($(B.south east)+(-\x,\d)$) --
+    ($(B.south)+(0,-\d)$) --
+    ($(B.south west)+(\x,\d)$) -- cycle;
+
+  % Centered icon
+  \node[font=\Large] at (B.center) {#1};
+\end{tikzpicture}%
+}
+
+
+% Row: icon badge + text block
+% #1 icon, #2 subtitle/title, #3 text
+\newcommand{\InsightRow}[3]{%
+\begingroup
+  % Space between badge and the text block
+  \setlength{\columnsep}{6mm}
+
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.13\textwidth}
+      \ChevronBadge{#1}{1.55cm}
+    \end{column}
+
+    \begin{column}{0.87\textwidth}
+      % Internal padding so text is NOT tight to the column edge
+      \begin{minipage}[t]{\linewidth}
+        \setlength{\parindent}{0pt}
+        \raggedright
+        \hspace*{2mm}% internal padding (adjust 1–4mm)
+        \begin{minipage}[t]{\dimexpr\linewidth-2mm\relax}
+          {\small\bfseries #2}\par\vspace{0.6mm}
+          {\normalsize #3}
+        \end{minipage}
+      \end{minipage}
+    \end{column}
+  \end{columns}
+
+  \vspace{2mm}
+\endgroup
+}
+
+
+% =========================================================
+% Accent cards (for "Complementarity" slide)
+% =========================================================
+\newtcolorbox{AccentCard}[1][]{%
+  enhanced,
+  colback=white,
+  colframe=PanelBorder,
+  boxrule=0.7pt,
+  sharp corners,
+  left=12pt,right=12pt,top=10pt,bottom=10pt,
+  overlay={%
+    \fill[cobalt] (frame.north west) rectangle ([xshift=3.0pt]frame.south west);
+  },
+  #1
+}
+
+\newcommand{\QuoteRule}[1]{%
+  \par\vspace{6mm}
+  \noindent\color{cobalt}\rule{2.0pt}{2.6cm}\hspace{8pt}%
+  \begin{minipage}[t]{0.88\textwidth}
+    \itshape #1
+  \end{minipage}
+}
+
+
+
+% Avoid invisible unicode char issues
+\DeclareUnicodeCharacter{200B}{{\hskip 0pt}}
+
+
+\endinput
